@@ -1,1 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Votación Blockchain</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .option {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 40%;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+        .option.selected {
+            border-color: #4CAF50;
+            box-shadow: 0 0 15px rgba(76,175,80,0.3);
+        }
+        .results {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+        .progress-container {
+            margin: 15px 0;
+        }
+        .progress-bar {
+            height: 24px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .progress-bar .fill.option-a {
+            background-color: #007bff;
+        }
+        .progress-bar .fill.option-b {
+            background-color: #28a745;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .address {
+            font-size: 12px;
+            color: #666;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de Votación en Blockchain</h1>
+            <p>Selecciona una opción y confirma tu voto que quedará registrado inmutablemente en la blockchain</p>
+            <div class="address">
+                <strong>Contrato:</strong> 0x123...abc
+            </div>
+        </div>
 
+        <div class="options">
+            <div class="option" id="option-a">
+                <h2>Opción A</h2>
+                <p>Vota por la propuesta A</p>
+            </div>
+            <div class="option" id="option-b">
+                <h2>Opción B</h2>
+                <p>Vota por la propuesta B</p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button id="vote-btn" disabled>Confirmar Voto</button>
+        </div>
+
+        <div class="status" id="status">
+            Conectando a la blockchain...
+        </div>
+
+        <div class="results">
+            <h2>Resultados en tiempo real</h2>
+            <div class="progress-container">
+                <h3>Opción A: <span id="count-a">0</span> votos</h3>
+                <div class="progress-bar">
+                    <div class="fill option-a" id="progress-a" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="progress-container">
+                <h3>Opción B: <span id="count-b">0</span> votos</h3>
+                <div class="progress-bar">
+                    <div class="fill option-b" id="progress-b" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Esta sería la integración con Web3.js para interactuar con el contrato
+        // En una demostración real, aquí conectaríamos con MetaMask o un proveedor Web3
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const optionA = document.getElementById('option-a');
+            const optionB = document.getElementById('option-b');
+            const voteBtn = document.getElementById('vote-btn');
+            const status = document.getElementById('status');
+            
+            // Simulación de conexión
+            setTimeout(() => {
+                status.textContent = 'Conectado a la blockchain. Selecciona una opción.';
+            }, 1500);
+            
+            let selectedOption = null;
+
+            optionA.addEventListener('click', () => {
+                optionA.classList.add('selected');
+                optionB.classList.remove('selected');
+                selectedOption = 'A';
+                voteBtn.disabled = false;
+            });
+
+            optionB.addEventListener('click', () => {
+                optionB.classList.add('selected');
+                optionA.classList.remove('selected');
+                selectedOption = 'B';
+                voteBtn.disabled = false;
+            });
+
+            voteBtn.addEventListener('click', () => {
+                if (!selectedOption) return;
+                
+                // Simulación de envío de transacción
+                status.textContent = 'Enviando tu voto a la blockchain...';
+                
+                setTimeout(() => {
+                    // Simulación de confirmación
+                    status.textContent = `¡Voto por Opción ${selectedOption} registrado en la blockchain!`;
+                    voteBtn.disabled = true;
+                    
+                    // Actualizar resultados (simulación)
+                    updateResults();
+                }, 2000);
+            });
+
+            function updateResults() {
+                const countA = document.getElementById('count-a');
+                const countB = document.getElementById('count-b');
+                const progressA = document.getElementById('progress-a');
+                const progressB = document.getElementById('progress-b');
+                
+                // Valores simulados
+                const currentA = parseInt(countA.textContent);
+                const currentB = parseInt(countB.textContent);
+                
+                // Incrementar el contador según la opción seleccionada
+                if (selectedOption === 'A') {
+                    countA.textContent = currentA + 1;
+                } else {
+                    countB.textContent = currentB + 1;
+                }
+                
+                // Actualizar barras de progreso
+                const totalVotes = parseInt(countA.textContent) + parseInt(countB.textContent);
+                const percentA = (parseInt(countA.textContent) / totalVotes) * 100;
+                const percentB = (parseInt(countB.textContent) / totalVotes) * 100;
+                
+                progressA.style.width = percentA + '%';
+                progressB.style.width = percentB + '%';
+            }
+        });
+    </script>
+</body>
+</html>
